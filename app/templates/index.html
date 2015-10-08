@@ -4,6 +4,18 @@
 
 {% block page_content %}
 <div class="page-header">
-    <h1>Hello, {% if current_user.is_authenticated %}{{ current_user.email }}{% else %}Stranger{% endif %}!</h1>
+    {% if current_user.is_authenticated %}
+    <div class="row">
+        <div class="col-xs-6">
+            <h1>Source</h1>
+        </div>
+        <div class="col-xs-6">
+            <h1>Dest</h1>
+        </div>
+    </div>
+    {% else %}
+        <h1>Hi, Stranger! Please log in...</h1>
+    {% endif %}
 </div>
+
 {% endblock %}
