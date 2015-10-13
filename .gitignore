@@ -40,3 +40,7 @@ nosetests.xml
 
 # Virtual environment
 venv
+
+# Uploads
+static/uploads/*
+app/static/uploads

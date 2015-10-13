@@ -9,14 +9,14 @@ UPLOAD_FOLDER = os.path.realpath('.') + '/app/static/uploads/'
 def index():
     return render_template('index.html')
 
-@main.route('/', methods=['POST'])
+@main.route('/upload-target', methods=['POST'])
 def upload_file():
     if request.method == 'POST':
         file = request.files['file']
         if file:
             filename = secure_filename(file.filename)
             file.save(os.path.join(UPLOAD_FOLDER, filename))
-            return redirect('/')
+            # return redirect('/')
     return '''
     <!doctype html>
     <title>Upload new File</title>
