@@ -2,12 +2,18 @@
 
 {% block title %}File Transfer Tool{% endblock %}
 
+
+
 {% block page_content %}
+<script src="{{ url_for('static', filename='javascript/dropzone.js') }}"></script>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dropzone.css') }}">
+
 <div class="page-header">
     {% if current_user.is_authenticated %}
     <div class="row">
         <div class="col-xs-6">
             <h1>Source</h1>
+            <form action="/upload-target" class="dropzone"></form>     
         </div>
         <div class="col-xs-6">
             <h1>Dest</h1>

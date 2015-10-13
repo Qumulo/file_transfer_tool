@@ -8,11 +8,14 @@ class Config:
     MAIL_SERVER = 'smtp.googlemail.com'
     MAIL_PORT = 587
     MAIL_USE_TLS = True
-    MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
-    MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
-    FLASKY_MAIL_SUBJECT_PREFIX = '[Flasky]'
-    FLASKY_MAIL_SENDER = 'Flasky Admin <flasky@example.com>'
-    FLASKY_ADMIN = os.environ.get('FLASKY_ADMIN')
+    MAIL_USERNAME = os.environ.get('MAIL_USERNAME') or 'user@domain.com'
+    MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD') or 'abc123'
+    FTT_MAIL_SUBJECT_PREFIX = '[File Transfer Tool]'
+    FTT_MAIL_SENDER = 'File Transfer Tool Admin <flasky@example.com>'
+    FTT_ADMIN = os.environ.get('FILE_TRANSFER_TOOL_ADMIN')
+    DEFAULT_FILE_STORAGE = 'filesystem'
+    UPLOADS_FOLDER = os.path.realpath('.') + '/static/uploads/'
+    FILE_SYSTEM_STORAGE_FILE_VIEW = 'static'
 
     @staticmethod
     def init_app(app):
