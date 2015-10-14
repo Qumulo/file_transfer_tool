@@ -1,6 +1,6 @@
 from . import main
 import os
-from flask import Flask, render_template, request, session, redirect, url_for
+from flask import current_app, Flask, render_template, request, session, redirect, url_for
 from werkzeug import secure_filename
 
 UPLOAD_FOLDER = os.path.realpath('.') + '/app/static/uploads/'
@@ -15,7 +15,7 @@ def upload_file():
         file = request.files['file']
         if file:
             filename = secure_filename(file.filename)
-            file.save(os.path.join(UPLOAD_FOLDER, filename))
+            file.save(os.path.join(current_app.config['UPLOADS_FOLDER'], filename))
             # return redirect('/')
     return '''
     <!doctype html>

@@ -14,8 +14,11 @@ class Config:
     FTT_MAIL_SENDER = 'File Transfer Tool Admin <flasky@example.com>'
     FTT_ADMIN = os.environ.get('FILE_TRANSFER_TOOL_ADMIN')
     DEFAULT_FILE_STORAGE = 'filesystem'
-    UPLOADS_FOLDER = os.path.realpath('.') + '/static/uploads/'
+    UPLOADS_FOLDER = os.path.realpath('.') + '/app/static/uploads/'
     FILE_SYSTEM_STORAGE_FILE_VIEW = 'static'
+    CLUSTER = 'music'
+    CLUSTER_USER = os.environ.get('CLUSTER_USER')
+    CLUSTER_PWD = os.environ.get('CLUSTER_PWD')
 
     @staticmethod
     def init_app(app):
