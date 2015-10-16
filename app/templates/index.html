@@ -92,7 +92,9 @@
 <!--                 <form action="/upload-target" class="drop-area">
                     <input type="file" id="file_input" webkitdirectory="" directory="">
                 </form> -->
-                <span class="btn btn-success fileinput-button">
+                <input type="file" id="my_folder" webkitdirectory="" directory="" style="display:none">
+
+                <span id="get_folder" class="btn btn-success fileinput-button" webkitdirectory="" directory="">
                     <i class="glyphicon glyphicon-plus"></i>
                     <span>Add files...</span>
                 </span>
@@ -165,6 +167,11 @@
 
 <script>
 
+    document.getElementById('get_folder').onclick = function() {
+        document.getElementById('my_folder').click();
+        return false;
+    };
+
     // var dropzone = document.getElementById('dropzone');
     // dropzone.ondrop = function(e) {
     //   var length = e.dataTransfer.items.length;
@@ -188,6 +195,7 @@
     url: "/upload-target", // Set the url
     thumbnailWidth: 80,
     thumbnailHeight: 80,
+    maxFilesize: 2048,
     parallelUploads: 20,
     previewTemplate: previewTemplate,
     autoQueue: false, // Make sure the files aren't queued until manually added
@@ -205,7 +213,9 @@
     document.querySelector("#total-progress .progress-bar").style.width = progress + "%";
   });
 
-  myDropzone.on("sending", function(file) {
+  myDropzone.on("sending", function(file, xhr, formData) {
+    // Send fullPath along with the file as POST data.
+    formData.append("fullPath", file.fullPath);
     // Show the total progress bar when upload starts
     document.querySelector("#total-progress").style.opacity = "1";
     // And disable the start button

@@ -11,12 +11,20 @@ def index():
 
 @main.route('/upload-target', methods=['POST'])
 def upload_file():
-    if request.method == 'POST':
-        file = request.files['file']
-        if file:
-            filename = secure_filename(file.filename)
-            file.save(os.path.join(current_app.config['UPLOADS_FOLDER'], filename))
-            # return redirect('/')
+
+    file = request.files['file']
+
+    if file:
+
+        fullPath = request.form['fullPath']
+        filename = secure_filename(file.filename)
+        saveFolder = os.path.join(current_app.config['UPLOADS_FOLDER']+ os.path.dirname(fullPath))
+
+        if not os.path.exists(saveFolder):
+            os.makedirs(saveFolder)
+
+        file.save(os.path.join(saveFolder, filename))
+
     return '''
     <!doctype html>
     <title>Upload new File</title>
@@ -26,5 +34,13 @@ def upload_file():
          <input type=submit value=Upload>
     </form>
     '''
+
+@main.route('/get-cluster-data')
+def get_cluster_data():
+    pass
+
+@main.route('/set-cluster-folder', methods=['POST'])
+def set_cluster_folder():
+    pass
 
 
