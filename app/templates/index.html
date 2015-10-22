@@ -23,8 +23,6 @@
             <div id="actions" class="row">
 
               <div class="col-lg-7">
-                <input type="file" id="my_folder" webkitdirectory="" directory="" style="display:none">
-
                 <span id="get_folder" class="btn btn-success fileinput-button" webkitdirectory="" directory="">
                     <i class="glyphicon glyphicon-plus"></i>
                     <span>Add files...</span>
@@ -80,18 +78,10 @@
                       </button>
                     </div>
                   </div>
-
                 </div>
-
-
             </div>
               </div>
             </div>
-
-
-
-
-
         </div>
         <div class="col-xs-6">
             <div class="panel panel-default">
@@ -99,7 +89,13 @@
                 <h2 class="panel-title">Destination</h2>
               </div>
               <div class="panel-body">
-                Panel content
+                <ul id="cluster-tree">
+                  <li>parent
+                    <ul>
+                      <li>child</li>
+                    </ul>
+                  </li>
+                </ul>
               </div>
             </div>
         </div>
@@ -110,24 +106,6 @@
 </div> 
 
 <script>
-
-    document.getElementById('get_folder').onclick = function() {
-        document.getElementById('my_folder').click();
-        return false;
-    };
-
-    // var dropzone = document.getElementById('dropzone');
-    // dropzone.ondrop = function(e) {
-    //   var length = e.dataTransfer.items.length;
-    //   for (var i = 0; i < length; i++) {
-    //     var entry = e.dataTransfer.items[i].webkitGetAsEntry();
-    //     if (entry.isFile) {
-    //       console.log("hey a file...");
-    //     } else if (entry.isDirectory) {
-    //       console.log("hey a directory...");
-    //     }
-    //   }
-    // };
 
   // Get the template HTML and remove it from the doument
   var previewNode = document.querySelector("#template");
