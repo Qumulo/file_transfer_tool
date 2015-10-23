@@ -3,7 +3,35 @@ import os
 from flask import current_app, Flask, render_template, request, session, redirect, url_for
 from werkzeug import secure_filename
 
-UPLOAD_FOLDER = os.path.realpath('.') + '/app/static/uploads/'
+import qumulo.lib.request
+import qumulo.rest.fs as fs
+import qumulo.lib.auth
+
+def build_json(path):
+    ''' return JSON tree of all directories on cluster starting at path '''
+
+    host = current_app.config['CLUSTER']
+    user = current_app.config['CLUSTER_USER']
+    passwd = current_app.config['CLUSTER_PWD']
+
+    try:
+        connection = qumulo.lib.request.Connection(\
+                            host, int(port))
+        login_results, _ = qumulo.rest.auth.login(\
+                connection, None, user, passwd)
+
+        credentials = qumulo.lib.auth.Credentials.\
+                from_login_response(login_results)
+
+    except Exception, excpt:
+        print "Error connecting to the REST server: %s" % excpt
+        print __doc__
+        # TODO: Raise error
+        return False
+
+
+    return True
+
 
 @main.route('/', methods=['GET'])
 def index():
@@ -38,13 +66,13 @@ def upload_file():
 @main.route('/get-cluster-data')
 def get_cluster_data():
 
-    if request.args.get('path'):
-        path = request.args['path']
-    else: # root
+    path = request.args.get('path')
+    if path is None:
         path = '/'
 
-    # import ipdb; ipdb.set_trace()
-    print('path is ' + path)
+
+    json_result = build_json(path)
+    # return json_result
     
     return '''
     [
@@ -70,10 +98,5 @@ def get_cluster_data():
         ]}
     ]
     '''
-
-
-@main.route('/set-cluster-folder', methods=['POST'])
-def set_cluster_folder():
-    pass
 
 

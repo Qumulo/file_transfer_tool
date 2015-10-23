@@ -24,6 +24,50 @@
     }
 
 
+    .btn-default:focus,
+    .btn-default:active,
+    .btn-default.active
+    {
+      background-color: #ffffff;
+    }
+
+    .btn-default:hover
+    {
+      background-color: #ebebeb;
+    }
+
+/*    .btn-primary {
+      color: lightgray;
+      background-color: #aaaaaa;
+      border-color: black;
+    }
+
+    .btn-success {
+      color: gray;
+      background-color: #bbbbbb;
+      border-color: black;
+    }
+
+    .btn-warning {
+      color: darkgray;
+      background-color: #cccccc;
+      border-color: black;
+    }
+
+    .btn-info {
+      color: lightgray;
+      background-color: #dddddd;
+      border-color: black;
+    }
+
+    .btn-danger {
+      color: lightgray;
+      background-color: #eeeeee;
+      border-color: black;
+    }
+*/
+
+
 
     /* The total progress gets shown by event listeners */
     #total-progress {

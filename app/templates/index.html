@@ -197,10 +197,11 @@
         path = path + parentList[i]["title"] + '/';
       }
       path = path + node['title'];
+      // console.log("path is " + path);
 
       data.result = {
         url: "/get-cluster-data", 
-        data: {path: path },
+        data: { path: path },
         debugDelay: 1000};
     }});
 
