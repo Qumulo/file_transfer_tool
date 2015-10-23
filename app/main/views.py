@@ -38,6 +38,14 @@ def upload_file():
 @main.route('/get-cluster-data')
 def get_cluster_data():
 
+    if request.args.get('path'):
+        path = request.args['path']
+    else: # root
+        path = '/'
+
+    # import ipdb; ipdb.set_trace()
+    print('path is ' + path)
+    
     return '''
     [
         {"title": "Animalia", "expanded": true, "folder": true, "children": [

@@ -163,6 +163,8 @@
 
 
   // Initialize Fancytree
+  var myTree = $("#tree");
+
   $("#tree").fancytree({
     extensions: ["dnd", "edit", "glyph", "wide"],
     checkbox: true,
@@ -189,7 +191,13 @@
     },
     lazyLoad: function(event, data) {
       var node = data.node;
-      var path = node.getKeyPath();
+      var parentList = node.getParentList();
+      var path = '';
+      for (var i in parentList) {
+        path = path + parentList[i]["title"] + '/';
+      }
+      path = path + node['title'];
+
       data.result = {
         url: "/get-cluster-data", 
         data: {path: path },
