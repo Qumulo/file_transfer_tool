@@ -37,7 +37,32 @@ def upload_file():
 
 @main.route('/get-cluster-data')
 def get_cluster_data():
-    pass
+
+    return '''
+    [
+        {"title": "Animalia", "expanded": true, "folder": true, "children": [
+            {"title": "Chordate", "folder": true, "children": [
+                {"title": "Mammal", "children": [
+                    {"title": "Primate", "children": [
+                        {"title": "Primate", "children": [
+                        ]},
+                        {"title": "Carnivora", "children": [
+                        ]}
+                    ]},
+                    {"title": "Carnivora", "children": [
+                        {"title": "Felidae", "lazy": true}
+                    ]}
+                ]}
+            ]},
+            {"title": "Arthropoda", "expanded": true, "folder": true, "children": [
+                {"title": "Insect", "children": [
+                    {"title": "Diptera", "lazy": true}
+                ]}
+            ]}
+        ]}
+    ]
+    '''
+
 
 @main.route('/set-cluster-folder', methods=['POST'])
 def set_cluster_folder():
