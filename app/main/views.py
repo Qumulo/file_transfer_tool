@@ -1,4 +1,5 @@
 from . import main
+import json
 import os
 from flask import current_app, Flask, render_template, request, session, redirect, url_for
 from werkzeug import secure_filename
@@ -7,16 +8,40 @@ import qumulo.lib.request
 import qumulo.rest.fs as fs
 import qumulo.lib.auth
 
-def build_json(path):
+def create_json_list(path, directories):
+
+    children = []
+
+    for directory in directories:
+
+        d = { "title": directory, \
+           "expanded" : False, \
+           "folder" : True, \
+           "lazy" : True }
+        children.append(d)
+
+    if path == '/':
+        result = [ { "title": path, \
+                   "expanded" : True, \
+                   "folder" : True, \
+                   "children" : children } ]
+    else:
+        result = children
+
+    return json.dumps(result)
+
+
+def get_directories(path):
     ''' return JSON tree of all directories on cluster starting at path '''
 
     host = current_app.config['CLUSTER']
     user = current_app.config['CLUSTER_USER']
     passwd = current_app.config['CLUSTER_PWD']
+    port = current_app.config['PORT']
 
     try:
         connection = qumulo.lib.request.Connection(\
-                            host, int(port))
+                            host, port)
         login_results, _ = qumulo.rest.auth.login(\
                 connection, None, user, passwd)
 
@@ -29,8 +54,12 @@ def build_json(path):
         # TODO: Raise error
         return False
 
+    directories = []
+    for response in fs.read_entire_directory(connection, credentials, 16, path):
+        directories = [f['name'] for f in response.data['files'] if f['type'] == 'FS_FILE_TYPE_DIRECTORY']
 
-    return True
+
+    return create_json_list(path, directories)
 
 
 @main.route('/', methods=['GET'])
@@ -71,32 +100,32 @@ def get_cluster_data():
         path = '/'
 
 
-    json_result = build_json(path)
-    # return json_result
+    json_result = get_directories(path)
+    return json_result
     
-    return '''
-    [
-        {"title": "Animalia", "expanded": true, "folder": true, "children": [
-            {"title": "Chordate", "folder": true, "children": [
-                {"title": "Mammal", "children": [
-                    {"title": "Primate", "children": [
-                        {"title": "Primate", "children": [
-                        ]},
-                        {"title": "Carnivora", "children": [
-                        ]}
-                    ]},
-                    {"title": "Carnivora", "children": [
-                        {"title": "Felidae", "lazy": true}
-                    ]}
-                ]}
-            ]},
-            {"title": "Arthropoda", "expanded": true, "folder": true, "children": [
-                {"title": "Insect", "children": [
-                    {"title": "Diptera", "lazy": true}
-                ]}
-            ]}
-        ]}
-    ]
-    '''
+    # return '''
+    # [
+    #     {"title": "Animalia", "expanded": true, "folder": true, "children": [
+    #         {"title": "Chordate", "folder": true, "children": [
+    #             {"title": "Mammal", "children": [
+    #                 {"title": "Primate", "children": [
+    #                     {"title": "Primate", "children": [
+    #                     ]},
+    #                     {"title": "Carnivora", "children": [
+    #                     ]}
+    #                 ]},
+    #                 {"title": "Carnivora", "children": [
+    #                     {"title": "Felidae", "lazy": true}
+    #                 ]}
+    #             ]}
+    #         ]},
+    #         {"title": "Arthropoda", "expanded": true, "folder": true, "children": [
+    #             {"title": "Insect", "children": [
+    #                 {"title": "Diptera", "lazy": true}
+    #             ]}
+    #         ]}
+    #     ]}
+    # ]
+    # '''
 
 
