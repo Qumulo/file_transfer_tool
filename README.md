@@ -63,5 +63,4 @@ your Qumulo Cluster version.
 
 ### 4. Set up the configuration file
 Edit *config.json*
-1. Add your Qumulo cluster information and credentials as well as the email credentials/server. There are descriptions of all required properties. All settings are required, so make sure to replace all the values in the <> brackets. 
-
+1. Add your Qumulo cluster information and credentials as well as the email credentials/server. 
