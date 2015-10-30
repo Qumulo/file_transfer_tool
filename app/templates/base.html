@@ -6,14 +6,15 @@
 {{ super() }}
 <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
 <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
 {% endblock %}
 
 {% block navbar %}
-<div id="qumulo-navbar" class="navbar navbar-inverse" role="navigation">
-    <div class="container">
+<div id="qumulo-navbar" class="navbar navbar-inverse" role="navigation" style="border-radius:0px">
+    <div class="container-fluid">
         <div class="navbar-header">
             <div class="pull-left">
-                <img style="max-width:100px; margin-top: -7px;"
+                <img style="max-width:100px; margin: 7px 0 0 20px;"
                  src="/static/images/logo.png">
                  </img>
             </div>
@@ -24,15 +25,15 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="{{ url_for('main.index') }}">File Transfer Tool</a>
+            <a class="navbar-brand" href="{{ url_for('main.index') }}" style="color:white">File Transfer Tool</a>
         </div>
         <div class="navbar-collapse collapse">
-            <ul class="nav navbar-nav navbar-right">
+            <ul class="nav navbar-nav navbar-right" style="color:white">
                 {% if current_user.is_authenticated %}
-                <li>Hello, {% if current_user.is_authenticated %}{{ current_user.email }}{% else %}Stranger{% endif %}!</li>
-                <li><a href="{{ url_for('auth.logout') }}">Log Out</a></li>
+                <li><a style="color:white">Hello, {% if current_user.is_authenticated %}{{ current_user.email }}{% else %}Stranger{% endif %}!</a></li>
+                <li><a href="{{ url_for('auth.logout') }}" style="color:white">Log Out</a></li>
                 {% else %}
-                <li><a href="{{ url_for('auth.login') }}">Log In</a></li>
+                <li><a href="{{ url_for('auth.login') }}" style="color:white">Log In</a></li>
                 {% endif %}
             </ul>
         </div>
