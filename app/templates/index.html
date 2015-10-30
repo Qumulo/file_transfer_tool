@@ -17,9 +17,9 @@
 
 <!-- FancyTree -->
 <link rel="stylesheet" href="{{ url_for('static', filename='css/skin-bootstrap/ui.fancytree.min.css') }}">
-<script src="{{ url_for('static', filename='javascript/jquery.fancytree-all.min.js') }}"></script>
+<!-- <script src="{{ url_for('static', filename='javascript/jquery.fancytree-all.js') }}"></script> -->
 
-<!-- <script src="{{ url_for('static', filename='javascript/src/jquery.fancytree.js') }}"></script> -->
+<script src="{{ url_for('static', filename='javascript/src/jquery.fancytree.js') }}"></script>
 <script src="{{ url_for('static', filename='javascript/src/jquery.fancytree.dnd.js') }}"></script>
 <script src="{{ url_for('static', filename='javascript/src/jquery.fancytree.edit.js') }}"></script>
 <script src="{{ url_for('static', filename='javascript/src/jquery.fancytree.glyph.js') }}"></script>
@@ -149,6 +149,13 @@
 
 <script>
 
+  function makeVisible(newSection) {
+        $(".section").not("#" + newSection).hide();
+        $("#" + newSection).show();
+    }
+
+  makeVisible("drop-caption");
+
   // stuff for fancyTree
   glyph_opts = {
     map: {
@@ -169,56 +176,8 @@
     }
   };
 
-
-  // Initialize Fancytree
-  // $("#src-tree").fancytree({
-  // extensions: ["dnd", "edit", "glyph", "wide"],
-  // checkbox: true,
-  // dnd: {
-  //   focusOnClick: true,
-  //   dragStart: function(node, data) { return true; },
-  //   dragEnter: function(node, data) { return false; },
-  //   dragDrop: function(node, data) { data.otherNode.copyTo(node, data.hitMode); }
-  // },
-  // glyph: glyph_opts,
-  // selectMode: 2,
-  // source: {url: "/static/ajax-tree-taxonomy.json", debugDelay: 1000},
-  // toggleEffect: { effect: "drop", options: {direction: "left"}, duration: 400 },
-  // wide: {
-  //   iconWidth: "1em",     // Adjust this if @fancy-icon-width != "16px"
-  //   iconSpacing: "0.5em", // Adjust this if @fancy-icon-spacing != "3px"
-  //   levelOfs: "1.5em"     // Adjust this if ul padding != "16px"
-  // },
-
-  // iconClass: function(event, data){
-  //   // if( data.node.isFolder() ) {
-  //   //   return "glyphicon glyphicon-book";
-  //   // }
-  // },
-  // lazyLoad: function(event, data) {
-  //   var node = data.node;
-  //   var parentList = node.getParentList();
-  //   var path = '';
-  //   for (var i in parentList) {
-  //     path = path + parentList[i]["title"] + '/';
-  //   }
-  //   path = path + node['title'];
-  //   // console.log("path is " + path);
-
-  //   data.result = {
-  //     url: "/get-cluster-data", 
-  //     data: { path: path },
-  //     debugDelay: 1000};
-  // }});
-
-  function makeVisible(newSection) {
-        $(".section").not("#" + newSection).hide();
-        $("#" + newSection).show();
-    }
-
-  makeVisible("drop-caption");
-
-  $("#dest-tree").fancytree({
+  var fancy_tree_opts = 
+  {
     extensions: ["dnd", "edit", "glyph", "wide"],
     checkbox: false,
     dnd: {
@@ -250,13 +209,15 @@
         path = path + parentList[i]["title"] + '/';
       }
       path = path + node['title'];
-      // console.log("path is " + path);
 
       data.result = {
         url: "/get-cluster-data", 
         data: { path: path },
         debugDelay: 1000};
-    }});
+    }};
+
+  $("#dest-tree").fancytree(fancy_tree_opts);
+  var tree = $("#dest-tree").fancytree('getTree');
 
 
   // Get the template HTML and remove it from the doument
@@ -278,8 +239,9 @@
   });
 
   myDropzone.on("queuecomplete", function(event) {
-    console.log("files dropped...");
-    console.log(myDropzone.files);
+    myDropzone.removeAllFiles();
+    makeVisible("drop-caption");  
+    tree.reload();
   })
 
   myDropzone.on("addedfile", function(file) {
