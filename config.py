@@ -11,7 +11,7 @@ class Config:
     MAIL_USERNAME = os.environ.get('MAIL_USERNAME') or 'user@domain.com'
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD') or 'abc123'
     FTT_MAIL_SUBJECT_PREFIX = '[File Transfer Tool]'
-    FTT_MAIL_SENDER = 'File Transfer Tool Admin <flasky@example.com>'
+    FTT_MAIL_SENDER = 'File Transfer Tool Admin <user@domain.com>'
     FTT_ADMIN = os.environ.get('FILE_TRANSFER_TOOL_ADMIN')
     DEFAULT_FILE_STORAGE = 'filesystem'
     UPLOADS_FOLDER = os.path.realpath('.') + '/app/static/uploads/'
@@ -20,7 +20,6 @@ class Config:
     PORT = 8000
     CLUSTER_USER = os.environ.get('FTT_CLUSTER_USER') or 'admin'
     CLUSTER_PWD = os.environ.get('FTT_CLUSTER_PWD') or 'admin'
-    CLUSTER_PROJECT_ROOT = '/'
 
     @staticmethod
     def init_app(app):

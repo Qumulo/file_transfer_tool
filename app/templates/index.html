@@ -95,7 +95,7 @@
                 </span>
               </div>
 
-            <div class="table table-striped" class="files" id="previews">
+            <div class="table" class="files" id="previews">
 
                   <div id="template" class="file-row">
                     <!-- This is used as the file preview template -->
@@ -176,7 +176,7 @@
     }
   };
 
-  var fancy_tree_opts = 
+  var dest_tree_ops = 
   {
     extensions: ["dnd", "edit", "glyph", "wide"],
     checkbox: false,
@@ -216,8 +216,8 @@
         debugDelay: 1000};
     }};
 
-  $("#dest-tree").fancytree(fancy_tree_opts);
-  var tree = $("#dest-tree").fancytree('getTree');
+  $("#dest-tree").fancytree(dest_tree_ops);
+  var dest_tree = $("#dest-tree").fancytree('getTree');
 
 
   // Get the template HTML and remove it from the doument
@@ -241,12 +241,13 @@
   myDropzone.on("queuecomplete", function(event) {
     myDropzone.removeAllFiles();
     makeVisible("drop-caption");  
-    tree.reload();
+    dest_tree.reload();
   })
 
   myDropzone.on("addedfile", function(file) {
     // Hookup the start button
     file.previewElement.querySelector(".start").onclick = function() { myDropzone.enqueueFile(file); };
+    // myDropzone.enqueueFile(file); 
   });
 
   // Show upload action buttons
