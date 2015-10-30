@@ -16,10 +16,10 @@ class Config:
     DEFAULT_FILE_STORAGE = 'filesystem'
     UPLOADS_FOLDER = os.path.realpath('.') + '/app/static/uploads/'
     FILE_SYSTEM_STORAGE_FILE_VIEW = 'static'
-    CLUSTER = '192.168.8.128'
+    CLUSTER = os.environ.get('FTT_CLUSTER') or 'music'
     PORT = 8000
-    CLUSTER_USER = os.environ.get('CLUSTER_USER') or 'admin'
-    CLUSTER_PWD = os.environ.get('CLUSTER_PWD') or 'admin'
+    CLUSTER_USER = os.environ.get('FTT_CLUSTER_USER') or 'admin'
+    CLUSTER_PWD = os.environ.get('FTT_CLUSTER_PWD') or 'admin'
     CLUSTER_PROJECT_ROOT = '/'
 
     @staticmethod

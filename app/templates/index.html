@@ -43,6 +43,11 @@
     overflow: hidden;
     text-overflow: ellipsis;
   }
+
+  .section {
+      display: none;
+  }
+
 </style>
 
 <!-- Add code to initialize the tree when the document is loaded: -->
@@ -58,17 +63,20 @@
 
             <div class="panel panel-default">
               <div class="panel-heading">
-                <h2 class="panel-title">Source</h2>
+                  <div class="col-lg-7">
+                    <h2 class="panel-title">Source</h2>
+                  </div>
               </div>
               <div class="panel-body">
             <div id="actions" class="row">
 
-              <div class="col-lg-7">
-                <span id="get_folder" class="btn btn-success fileinput-button" webkitdirectory="" directory="">
-                    <i class="glyphicon glyphicon-plus"></i>
-                    <span>Add files...</span>
+              <div id="drop-caption" class="section"><h4>Drop Folder or Files Here.</h4></div>
+
+              <div id="action-buttons" class="col-lg-7 section">
+                <div id="src-tree" class="panel-body fancytree-colorize-hover"></div>
+                <span id="get_folder" class="btn btn-success fileinput-button hidden" webkitdirectory="" directory="">
                 </span>
-                    <i class="glyphicon glyphicon-upload"></i>
+
                 <button type="submit" class="btn btn-primary start">
                     <span>Start upload</span>
                 </button>
@@ -130,7 +138,7 @@
                 <h2 class="panel-title">Destination</h2>
               </div>
               <div class="panel-body">
-                 <div id="tree" class="panel-body fancytree-colorize-hover"></div>
+                 <div id="dest-tree" class="panel-body fancytree-colorize-hover"></div>
             </div>
         </div>
     </div>
@@ -163,11 +171,56 @@
 
 
   // Initialize Fancytree
-  var myTree = $("#tree");
+  // $("#src-tree").fancytree({
+  // extensions: ["dnd", "edit", "glyph", "wide"],
+  // checkbox: true,
+  // dnd: {
+  //   focusOnClick: true,
+  //   dragStart: function(node, data) { return true; },
+  //   dragEnter: function(node, data) { return false; },
+  //   dragDrop: function(node, data) { data.otherNode.copyTo(node, data.hitMode); }
+  // },
+  // glyph: glyph_opts,
+  // selectMode: 2,
+  // source: {url: "/static/ajax-tree-taxonomy.json", debugDelay: 1000},
+  // toggleEffect: { effect: "drop", options: {direction: "left"}, duration: 400 },
+  // wide: {
+  //   iconWidth: "1em",     // Adjust this if @fancy-icon-width != "16px"
+  //   iconSpacing: "0.5em", // Adjust this if @fancy-icon-spacing != "3px"
+  //   levelOfs: "1.5em"     // Adjust this if ul padding != "16px"
+  // },
 
-  $("#tree").fancytree({
+  // iconClass: function(event, data){
+  //   // if( data.node.isFolder() ) {
+  //   //   return "glyphicon glyphicon-book";
+  //   // }
+  // },
+  // lazyLoad: function(event, data) {
+  //   var node = data.node;
+  //   var parentList = node.getParentList();
+  //   var path = '';
+  //   for (var i in parentList) {
+  //     path = path + parentList[i]["title"] + '/';
+  //   }
+  //   path = path + node['title'];
+  //   // console.log("path is " + path);
+
+  //   data.result = {
+  //     url: "/get-cluster-data", 
+  //     data: { path: path },
+  //     debugDelay: 1000};
+  // }});
+
+  function makeVisible(newSection) {
+        $(".section").not("#" + newSection).hide();
+        $("#" + newSection).show();
+    }
+
+  makeVisible("drop-caption");
+
+  $("#dest-tree").fancytree({
     extensions: ["dnd", "edit", "glyph", "wide"],
-    checkbox: true,
+    checkbox: false,
     dnd: {
       focusOnClick: true,
       dragStart: function(node, data) { return true; },
@@ -216,7 +269,7 @@
     url: "/upload-target", // Set the url
     thumbnailWidth: 80,
     thumbnailHeight: 80,
-    maxFilesize: 2048,
+    maxFilesize: 10240,
     parallelUploads: 20,
     previewTemplate: previewTemplate,
     autoQueue: false, // Make sure the files aren't queued until manually added
@@ -224,10 +277,20 @@
     clickable: ".fileinput-button" // Define the element that should be used as click trigger to select files.
   });
 
+  myDropzone.on("queuecomplete", function(event) {
+    console.log("files dropped...");
+    console.log(myDropzone.files);
+  })
+
   myDropzone.on("addedfile", function(file) {
     // Hookup the start button
     file.previewElement.querySelector(".start").onclick = function() { myDropzone.enqueueFile(file); };
   });
+
+  // Show upload action buttons
+  myDropzone.on("drop", function(progress) {
+    makeVisible("action-buttons");
+  }); 
 
   // Update the total progress bar
   myDropzone.on("totaluploadprogress", function(progress) {
