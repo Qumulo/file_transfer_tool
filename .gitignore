@@ -44,3 +44,6 @@ venv
 # Uploads
 static/uploads/*
 app/static/uploads
+
+# Migrations
+migrations/*
