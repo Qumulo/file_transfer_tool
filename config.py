@@ -20,6 +20,7 @@ class Config:
     PORT = 8000
     CLUSTER_USER = os.environ.get('FTT_CLUSTER_USER') or 'admin'
     CLUSTER_PWD = os.environ.get('FTT_CLUSTER_PWD') or 'admin'
+    CLUSTER_FOLDER = os.environ.get('FTT_CLUSTER_FOLDER')
 
     @staticmethod
     def init_app(app):

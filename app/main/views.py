@@ -95,11 +95,17 @@ def upload_file():
 @main.route('/get-cluster-data')
 def get_cluster_data():
 
+
     path = request.args.get('path')
     if path is None:
         path = '/'
 
 
+    # if a cluster folder has been specified, prefix everything with that folder
+    folder = current_app.config['CLUSTER_FOLDER']
+    if folder is not None:
+        path = folder + path
+        
     json_result = get_directories(path)
     return json_result
     
