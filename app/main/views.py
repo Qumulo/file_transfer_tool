@@ -8,16 +8,25 @@ import qumulo.lib.request
 import qumulo.rest.fs as fs
 import qumulo.lib.auth
 
-def create_json_list(path, directories):
+def create_json_list(path, contents):
 
     children = []
 
-    for directory in directories:
+    for c in contents:
 
-        d = { "title": directory, \
+        title = c[0]
+        type = c[1]
+        if type == 'FS_FILE_TYPE_DIRECTORY':
+            folder = True
+            lazy = True
+        else:
+            folder = False
+            lazy = False
+
+        d = { "title": c[0], \
            "expanded" : False, \
-           "folder" : True, \
-           "lazy" : True }
+           "folder" : folder, \
+           "lazy" : lazy }
         children.append(d)
 
     if path == '/':
@@ -31,7 +40,7 @@ def create_json_list(path, directories):
     return json.dumps(result)
 
 
-def get_directories(path):
+def get_contents(path):
     ''' return JSON tree of all directories on cluster starting at path '''
 
     host = current_app.config['CLUSTER']
@@ -54,11 +63,11 @@ def get_directories(path):
         # TODO: Raise error
         return False
 
-    directories = []
+    contents = []
     for response in fs.read_entire_directory(connection, credentials, 5000, path):
-        directories = directories + [f['name'] for f in response.data['files'] if f['type'] == 'FS_FILE_TYPE_DIRECTORY']
+        contents = contents + [ (f['name'], f['type']) for f in response.data['files']]
 
-    return create_json_list(path, directories)
+    return create_json_list(path, contents)
 
 
 @main.route('/', methods=['GET'])
@@ -105,7 +114,7 @@ def get_cluster_data():
     if folder is not None:
         path = folder + path
         
-    json_result = get_directories(path)
+    json_result = get_contents(path)
     return json_result
     
     # return '''
