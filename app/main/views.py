@@ -55,9 +55,8 @@ def get_directories(path):
         return False
 
     directories = []
-    for response in fs.read_entire_directory(connection, credentials, 16, path):
-        directories = [f['name'] for f in response.data['files'] if f['type'] == 'FS_FILE_TYPE_DIRECTORY']
-
+    for response in fs.read_entire_directory(connection, credentials, 5000, path):
+        directories = directories + [f['name'] for f in response.data['files'] if f['type'] == 'FS_FILE_TYPE_DIRECTORY']
 
     return create_json_list(path, directories)
 
