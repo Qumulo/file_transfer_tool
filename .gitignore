@@ -42,8 +42,11 @@ nosetests.xml
 venv
 
 # Uploads
-static/uploads/*
+static/uploads/
 app/static/uploads
 
 # Migrations
-migrations/*
+migrations/
+
+# JetBrains
+.idea/
