@@ -108,12 +108,12 @@ connection info:
 FTT uses SqLite and [Flask-Migrate](https://flask-migrate.readthedocs.org/en/latest/) to store user sessions, user names and upload activity.  You'll need to
 initialize SqlLite before the app can run, as described in the flask-migate docs:
 
-From a terminal prompt, change folder to directory where you've installed FTT.
+From a terminal prompt, change folder to directory where you've installed FTT and run the 
+following commands:
 
-```./manage.py db init
-./manage.py db migrate
-./manage.py db upgrade
-```
+    ./manage.py db init
+    ./manage.py db migrate
+    ./manage.py db upgrade
 
 If you run into problems, try
 
@@ -122,7 +122,18 @@ If you run into problems, try
 ```
 
 ### 6. Supporting multiple users
-In order to run FTT in non-developer/debug mode and support simultaneous users, you 
+
+The [guidance](http://flask.pocoo.org/docs/0.10/deploying/#deployment) from the developers of Flask is that
+you should not deploy your app into production using Flask's built-in webserver; Specifically 
+they say:
+
+    "You can use the builtin server during development, but you should use a full deployment option for production applications. (Do not use the builtin development server in production.)"
+    
+So for production scenarios you should consider using [uWSGI](http://flask.pocoo.org/docs/0.10/deploying/uwsgi/)
+with ngnx or perhaps [mod_wsgi](http://flask.pocoo.org/docs/0.10/deploying/mod_wsgi/) for Apache environments, or
+another option. 
+
+But short of creating a WSGI-based deployment, you can run FTT in non-developer/debug mode and support simultaneous users, you 
 should start the server using the following form/command (from http://goo.gl/A3YfNt):
 
 ```./manage.py runserver --host 0.0.0.0 --threaded```
