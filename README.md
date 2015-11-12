@@ -124,7 +124,7 @@ If you run into problems, try
 ### 6. Supporting multiple users
 
 The [guidance](http://flask.pocoo.org/docs/0.10/deploying/#deployment) from the developers of Flask is that
-you should not deploy your app into production using Flask's built-in webserver; Specifically 
+you should not deploy your app into production using Flask's built-in webserver; Specifically: 
 they say:
 
     "You can use the builtin server during development, but you should use a full deployment option for production applications. (Do not use the builtin development server in production.)"
