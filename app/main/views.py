@@ -113,7 +113,7 @@ def get_cluster_data():
     folder = current_app.config['CLUSTER_FOLDER']
     if folder is not None:
         path = folder + path
-        
+
     json_result = get_contents(path)
     return json_result
     

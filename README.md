@@ -28,7 +28,7 @@ git clone https://github.com/Qumulo/file_transfer_tool.git
 ```
 Or, download the zip file (https://github.com/Qumulo/file_transfer_tool/archive/master.zip) and unzip it to your machine where you will be running this tool.
 
-### 2. Install Prequisites
+### 2. Install Prerequisites
 
 We currently support Linux or MacOSX for running the File Transfer Tool.
 
@@ -43,14 +43,11 @@ https://community.qumulo.com/qumulo/topics/virtual-environments-when-using-qumul
 
 A virtual environment for this app and python is not a requirement but it is a best practice.
 
-
-```
-
 ### 3. Install the prerequisite python libraries
 
-Just run
+From a terminal window, run
 
-```shell
+```
 pip install -r requirements.txt
 ```
 
@@ -61,6 +58,83 @@ potentially use FTT with Qumulo Core versions earlier than 1.2.15 but we have no
 As always, you'll want to be sure that the version of Qumulo REST API specified in `requirements.txt' matches
 your Qumulo Cluster version.
 
+#### Flask Plugins
+FTT uses the [Flask web development framework](http://flask.pocoo.org/) to handle http requests and a number
+of Flask plugins:
+
+[Flask-Bootstrap](https://pythonhosted.org/Flask-Bootstrap/) for styling/theming using Twitter Bootstrap
+
+[Flask-SqlAlchemy](https://pythonhosted.org/Flask-SQLAlchemy/) for local SqLite DB
+
+[Flask-Mail](https://pythonhosted.org/Flask-Mail/) for email integration
+
+[Flask-Uploads](#) for file upload support
+
+
+and more.  See ```requirements.txt``` file for all Python/Flask dependencies.
+
+
+
 ### 4. Set up the configuration file
-Edit *config.json*
-1. Add your Qumulo cluster information and credentials as well as the email credentials/server. 
+There are a number of settings you'll need to set up in `config.py` before you can run the 
+FTT server. Specifically look at the following settings:
+
+```
+# CLUSTER is the name of the host/cluster we are using for the application
+CLUSTER = os.environ.get('FTT_CLUSTER') or 'music'
+# PORT is the port number used for the API by the specified CLUSTER
+PORT = 8000
+# CLUSTER_USER is the name of the account used when accessing the API
+CLUSTER_USER = os.environ.get('FTT_CLUSTER_USER') or 'admin'
+# CLUSTER_PWD is the password used when accessing the API
+CLUSTER_PWD = os.environ.get('FTT_CLUSTER_PWD') or 'admin'
+# CLUSTER_FOLDER is the starting folder to use for file uploads for FTT
+CLUSTER_FOLDER = os.environ.get('FTT_CLUSTER_FOLDER')
+```
+Once email is integrated into the app (pending) you'll want to also set up email 
+connection info:
+
+```
+    # Flask-Mail settings
+    MAIL_SERVER = 'smtp.googlemail.com'
+    MAIL_PORT = 587
+    MAIL_USE_TLS = True
+    MAIL_USERNAME = os.environ.get('MAIL_USERNAME') or 'user@domain.com'
+    MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD') or 'abc123'
+```
+
+
+### 5. Create local Sql database for users and logging
+FTT uses SqLite and [Flask-Migrate](https://flask-migrate.readthedocs.org/en/latest/) to store user sessions, user names and upload activity.  You'll need to
+initialize SqlLite before the app can run, as described in the flask-migate docs:
+
+From a terminal prompt, change folder to directory where you've installed FTT.
+
+```./manage.py db init
+./manage.py db migrate
+./manage.py db upgrade
+```
+
+If you run into problems, try
+
+```
+./manage.py db --help
+```
+
+### 6. Supporting multiple users
+In order to run FTT in non-developer/debug mode and support simultaneous users, you 
+should start the server using the following form/command (from http://goo.gl/A3YfNt):
+
+```./manage.py runserver --host 0.0.0.0 --threaded```
+
+or
+
+```./manage.py runserver --host 0.0.0.0 --processes=[n]```
+
+where
+
+```[n]```  is some integer value such as 3,10 etc.  
+
+using ```--host 0.0.0.0``` makes the host visible to other machines.
+
+
