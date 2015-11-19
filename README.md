@@ -151,6 +151,8 @@ another option. For simplicity's sake (easy to get up and running) I'm using [Gu
      
 will start the server with four workers at port 8000.
 
+If you want to go uWSGI/nginx route, a good 'how to' document for ubuntu can be found [here](https://www.digitalocean.com/community/tutorials/how-to-serve-flask-applications-with-uwsgi-and-nginx-on-ubuntu-14-04).
+
 Short of creating a WSGI-based deployment, you can run FTT in non-developer/debug mode and support simultaneous users, you 
 should start the server using the following form/command (from http://goo.gl/A3YfNt):
 
