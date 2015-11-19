@@ -45,7 +45,7 @@ A virtual environment for this app and python is not a requirement but it is a b
 
 ### 3. Install the prerequisite python libraries
 
-From a terminal window, run
+From a terminal window, `cd` to the folder where you cloned/installed file_transfer_tool and then run
 
 ```
 pip install -r requirements.txt
@@ -103,6 +103,10 @@ connection info:
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD') or 'abc123'
 ```
 
+*NOTE* Don't forget to `source` your shell script, restart a new session or otherwise pick up settings 
+such as `FTT_CLUSTER_FOLDER` after you change them; Typically you'll need to restart the application
+after making any config changes.
+
 
 ### 5. Create local Sql database for users and logging
 FTT uses SqLite and [Flask-Migrate](https://flask-migrate.readthedocs.org/en/latest/) to store user sessions, user names and upload activity.  You'll need to
@@ -120,8 +124,16 @@ If you run into problems, try
 ```
 ./manage.py db --help
 ```
+### 6. Mount cluster volume under [FTT folder]/app/static/uploads (or your own location)
 
-### 6. Supporting multiple users
+FTT currently does not use the REST API in order to create files; Instead, by default, we mount a cluster share
+at `[FTT folder]/app/static/uploads`.  Note that this is just the default setting for uploads in `config.py`, 
+it can be any folder that is reachable/writeable by the context in which the FTT app is running.  You can
+change the folder by changing the following line in `config.py`:
+
+    UPLOADS_FOLDER = os.path.realpath('.') + '/app/static/uploads/'
+
+### 7. Supporting multiple users
 
 The [guidance](http://flask.pocoo.org/docs/0.10/deploying/#deployment) from the developers of Flask is that
 you should not deploy your app into production using Flask's built-in webserver; Specifically: 
@@ -131,9 +143,15 @@ they say:
     
 So for production scenarios you should consider using [uWSGI](http://flask.pocoo.org/docs/0.10/deploying/uwsgi/)
 with ngnx or perhaps [mod_wsgi](http://flask.pocoo.org/docs/0.10/deploying/mod_wsgi/) for Apache environments, or
-another option. 
+another option. For simplicity's sake (easy to get up and running) I'm using [Gunicorn](http://docs.gunicorn.org/en/19.3/),
+ which is another WSGI server.  Starting and running using `gunicorn` is simple:
+ 
+     pip install gunicorn
+     gunicorn -b 0.0.0.0:8000 -w 4 manage:app
+     
+will start the server with four workers at port 8000.
 
-But short of creating a WSGI-based deployment, you can run FTT in non-developer/debug mode and support simultaneous users, you 
+Short of creating a WSGI-based deployment, you can run FTT in non-developer/debug mode and support simultaneous users, you 
 should start the server using the following form/command (from http://goo.gl/A3YfNt):
 
 ```./manage.py runserver --host 0.0.0.0 --threaded```

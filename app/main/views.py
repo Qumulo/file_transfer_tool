@@ -116,30 +116,3 @@ def get_cluster_data():
 
     json_result = get_contents(path)
     return json_result
-    
-    # return '''
-    # [
-    #     {"title": "Animalia", "expanded": true, "folder": true, "children": [
-    #         {"title": "Chordate", "folder": true, "children": [
-    #             {"title": "Mammal", "children": [
-    #                 {"title": "Primate", "children": [
-    #                     {"title": "Primate", "children": [
-    #                     ]},
-    #                     {"title": "Carnivora", "children": [
-    #                     ]}
-    #                 ]},
-    #                 {"title": "Carnivora", "children": [
-    #                     {"title": "Felidae", "lazy": true}
-    #                 ]}
-    #             ]}
-    #         ]},
-    #         {"title": "Arthropoda", "expanded": true, "folder": true, "children": [
-    #             {"title": "Insect", "children": [
-    #                 {"title": "Diptera", "lazy": true}
-    #             ]}
-    #         ]}
-    #     ]}
-    # ]
-    # '''
-
-
