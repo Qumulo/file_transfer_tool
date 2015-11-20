@@ -147,9 +147,9 @@ another option. For simplicity's sake (easy to get up and running) I'm using [Gu
  which is another WSGI server.  Starting and running using `gunicorn` is simple:
  
      pip install gunicorn
-     gunicorn -b 0.0.0.0:8000 -w 4 manage:app
+     gunicorn -b 0.0.0.0:8000 -w 4 --threads 4 --access-logfile ~/ftt_log.txt manage:app
      
-will start the server with four workers at port 8000.
+will start the server with four workers with four threads per worker at port 8000.
 
 If you want to go uWSGI/nginx route, a good 'how to' document for ubuntu can be found [here](https://www.digitalocean.com/community/tutorials/how-to-serve-flask-applications-with-uwsgi-and-nginx-on-ubuntu-14-04).
 
