@@ -1,4 +1,5 @@
 from . import main
+import errno
 import json
 import os
 from flask import current_app, Flask, render_template, request, session, redirect, url_for
@@ -86,7 +87,13 @@ def upload_file():
         saveFolder = os.path.join(current_app.config['UPLOADS_FOLDER']+ os.path.dirname(fullPath))
 
         if not os.path.exists(saveFolder):
-            os.makedirs(saveFolder)
+           try:
+               os.makedirs(saveFolder)
+           except OSError as exc:
+               if exc.errno == errno.EEXIST and os.path.isdir(saveFolder):
+                   pass
+               else:
+                   raise
 
         file.save(os.path.join(saveFolder, filename))
 
