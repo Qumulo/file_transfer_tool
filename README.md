@@ -147,7 +147,7 @@ another option. For simplicity's sake (easy to get up and running) I'm using [Gu
  which is another WSGI server.  Starting and running using `gunicorn` is simple:
  
      pip install gunicorn
-     gunicorn -b 0.0.0.0:8000 -w 4 --threads 4 --access-logfile ~/ftt_log.txt manage:app
+     gunicorn -b 0.0.0.0:8000 -w 4 --threads 4 -t 360 --access-logfile ~/ftt_log.txt manage:app
      
 will start the server with four workers with four threads per worker at port 8000.
 
