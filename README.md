@@ -146,7 +146,6 @@ with ngnx or perhaps [mod_wsgi](http://flask.pocoo.org/docs/0.10/deploying/mod_w
 another option. For simplicity's sake (easy to get up and running) I'm using [Gunicorn](http://docs.gunicorn.org/en/19.3/),
  which is another WSGI server.  Starting and running using `gunicorn` is simple:
  
-     pip install gunicorn
      gunicorn -b 0.0.0.0:8000 -w 4 --threads 4 -t 360 --access-logfile ~/ftt_log.txt manage:app
      
 will start the server with four workers with four threads per worker at port 8000.
