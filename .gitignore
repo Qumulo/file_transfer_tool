@@ -46,7 +46,7 @@ static/uploads/
 app/static/uploads/
 
 # Migrations
-**/migrations
+migrations/**
 
 # JetBrains
 .idea/
