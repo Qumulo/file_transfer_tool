@@ -84,7 +84,14 @@ def upload_file():
 
         fullPath = request.form['fullPath']
         filename = secure_filename(file.filename)
-        saveFolder = os.path.join(current_app.config['UPLOADS_FOLDER']+ os.path.dirname(fullPath))
+
+        # If the current user has a specified starting folder, tack that on to the path
+        starting_folder = session.get("starting_folder")
+        base_path = current_app.config['UPLOADS_FOLDER']
+        if starting_folder:
+            base_path = base_path + "/" + starting_folder + "/"
+
+        saveFolder = os.path.join(base_path + os.path.dirname(fullPath))
 
         if not os.path.exists(saveFolder):
            try:
@@ -110,16 +117,21 @@ def upload_file():
 @main.route('/get-cluster-data')
 def get_cluster_data():
 
-
-    path = request.args.get('path')
-    if path is None:
-        path = '/'
-
+    path = '/'
 
     # if a cluster folder has been specified, prefix everything with that folder
     folder = current_app.config['CLUSTER_FOLDER']
     if folder is not None:
-        path = folder + path
+        path = folder
+        # If the current user has a specified starting folder, tack that on to the path
+        starting_folder = session.get("starting_folder")
+        if starting_folder:
+            path = path + starting_folder
 
+    arg_path = request.args.get('path')
+    if arg_path:
+        path = path + '/' + arg_path
+
+    print("in get_cluster_data, path is " + path)
     json_result = get_contents(path)
     return json_result

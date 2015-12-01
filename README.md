@@ -167,4 +167,20 @@ where
 
 using ```--host 0.0.0.0``` makes the host visible to other machines.
 
+### 8. Associating a project folder with a user
+Users can be associated with a specific upload folder.  When this feature is used the user's "root"
+for FTT is the specified folder relative to FTT_CLUSTER_FOLDER.
+
+You can enable this feature for users in two ways:
+
+1. Provide user with a sign-up link that specifies the project folder as a parameter:
+
+http://localhost:5000/auth/register?starting_folder=research1
+
+2. Edit sqlite user database and enter a value in starting_folder field.
+
+** NOTE ** that the folder has to exist relative to FTT_CLUSTER_FOLDER on your Qumulo cluster prior to referencing
+in FTT.
+
+Users without a specified project folder will see all files in FTT_CLUSTER_FOLDER.
 
