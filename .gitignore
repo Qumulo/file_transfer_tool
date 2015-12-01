@@ -45,8 +45,8 @@ venv
 static/uploads/
 app/static/uploads/
 
-# Migrations
-migrations/**
-
 # JetBrains
 .idea/
+
+# Migrations
+migrations
