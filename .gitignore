@@ -48,3 +48,4 @@ app/static/uploads/
 # JetBrains
 .idea/
 migrations/versions/*.pyc
+194182d6dac8_.pyc
