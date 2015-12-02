@@ -47,6 +47,4 @@ app/static/uploads/
 
 # JetBrains
 .idea/
-
-# Migrations
-migrations
+migrations/versions/*.pyc
