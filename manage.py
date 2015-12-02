@@ -25,7 +25,6 @@ def test():
 
 
 if __name__ == '__main__':
-    KEY_SIZE = 32
-    manager.secret_key = open("/dev/random","rb").read(KEY_SIZE)
+    manager.secret_key = '\xe3\x14\x88\xb0\x9ct\x97\xe3\xe3{\xcb\x8a\xca\x80yQ\xf2\x83\xad\xe60\x04Er\x08\xe2Bn\xe49>3'
     manager.run()
 
