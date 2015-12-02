@@ -49,4 +49,4 @@ app/static/uploads/
 .idea/
 
 # Migrations
-migrations
+# migrations
