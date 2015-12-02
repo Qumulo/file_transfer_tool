@@ -25,4 +25,7 @@ def test():
 
 
 if __name__ == '__main__':
+    KEY_SIZE = 32
+    manager.secret_key = open("/dev/random","rb").read(KEY_SIZE)
     manager.run()
+

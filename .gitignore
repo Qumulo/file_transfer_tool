@@ -43,10 +43,10 @@ venv
 
 # Uploads
 static/uploads/
-app/static/uploads
-
-# Migrations
-migrations/
+app/static/uploads/
 
 # JetBrains
 .idea/
+
+# Migrations
+migrations
