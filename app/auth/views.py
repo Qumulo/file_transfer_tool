@@ -1,4 +1,6 @@
-from flask import render_template, redirect, request, url_for, flash, session
+import errno
+import os
+from flask import current_app, render_template, redirect, request, url_for, flash, session
 from flask.ext.login import login_user, logout_user, login_required, \
     current_user
 from . import auth
@@ -7,6 +9,19 @@ from ..models import User
 from ..email import send_email
 from .forms import LoginForm, RegistrationForm
 
+def create_starting_folder():
+    # If the current user has a specified starting folder, tack that on to the path
+    starting_folder = session.get("starting_folder")
+    save_folder = current_app.config['UPLOADS_FOLDER'] + "/" + starting_folder + "/"
+
+    if not os.path.exists(save_folder):
+       try:
+           os.makedirs(save_folder)
+       except OSError as exc:
+           if exc.errno == errno.EEXIST and os.path.isdir(save_folder):
+               pass
+           else:
+               raise
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
@@ -18,6 +33,8 @@ def login():
 
             if user.starting_folder is not None:
                 session["starting_folder"] = user.starting_folder
+                # ensure the user's starting_folder exists
+                create_starting_folder()
 
             return redirect(request.args.get('next') or url_for('main.index'))
         flash('Invalid username or password.')
