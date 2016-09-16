@@ -85,11 +85,15 @@ def upload_file():
         fullPath = request.form['fullPath']
         filename = secure_filename(file.filename)
 
+        # destPath = request.form['destPath']
+        # import ipdb; ipdb.set_trace()
         # If the current user has a specified starting folder, tack that on to the path
+        # also tack on destPath if provided as the 'root' for the upload
+
         starting_folder = session.get("starting_folder")
         base_path = current_app.config['UPLOADS_FOLDER']
         if starting_folder:
-            base_path = base_path + "/" + starting_folder + "/"
+            base_path = base_path + starting_folder + "/"
 
         saveFolder = os.path.join(base_path + os.path.dirname(fullPath))
 
@@ -130,7 +134,7 @@ def get_cluster_data():
 
     arg_path = request.args.get('path')
     if arg_path:
-        path = path + '/' + arg_path
+        path = path + arg_path
 
     print("in get_cluster_data, path is " + path)
     json_result = get_contents(path)

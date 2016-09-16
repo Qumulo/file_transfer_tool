@@ -200,6 +200,14 @@
       //   return "glyphicon glyphicon-book";
       // }
     },
+    click: function(event, data) {
+        var node = data.node;
+        if (node.lazy == true) { // folder
+            // if the user clicks a folder, use it as the destination for
+            // uploads...a
+            node.selected = !node.selected;
+        }
+    },
     lazyLoad: function(event, data) {
       var node = data.node;
       var parentList = node.getParentList();
@@ -260,10 +268,24 @@
   });
 
   myDropzone.on("sending", function(file, xhr, formData) {
+
+    // Get the selected node if any as destination for upload
+    if (dest_tree.getSelectedNodes().length > 0) {
+      console.log("wa-hey!");
+      var nodes = dest_tree.getSelectedNodes();
+      path = '';
+      for (var i in nodes) {
+        path = path + nodes[i]["title"] + '/';
+      }
+      formData.append("destPath", path);
+    }
+
     // Send fullPath along with the file as POST data.
     formData.append("fullPath", file.fullPath);
+
     // Show the total progress bar when upload starts
     document.querySelector("#total-progress").style.opacity = "1";
+
     // And disable the start button
     file.previewElement.querySelector(".start").setAttribute("disabled", "disabled");
   });
