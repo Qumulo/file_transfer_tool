@@ -28,6 +28,8 @@ git clone https://github.com/Qumulo/file_transfer_tool.git
 ```
 Or, download the zip file (https://github.com/Qumulo/file_transfer_tool/archive/master.zip) and unzip it to your machine where you will be running this tool.
 
+
+
 ### 2. Install Prerequisites
 
 We currently support Linux or MacOSX for running the File Transfer Tool.
@@ -42,6 +44,8 @@ article that we created on the subject:
 https://community.qumulo.com/qumulo/topics/virtual-environments-when-using-qumulo-rest-api
 
 A virtual environment for this app and python is not a requirement but it is a best practice.
+
+
 
 ### 3. Install the prerequisite python libraries
 
@@ -80,32 +84,23 @@ There are a number of settings you'll need to set up in `config.py` before you c
 FTT server. Specifically look at the following settings:
 
 ```
-# CLUSTER is the name of the host/cluster we are using for the application
-CLUSTER = os.environ.get('FTT_CLUSTER') or 'music'
-# PORT is the port number used for the API by the specified CLUSTER
-PORT = 8000
-# CLUSTER_USER is the name of the account used when accessing the API
-CLUSTER_USER = os.environ.get('FTT_CLUSTER_USER') or 'admin'
-# CLUSTER_PWD is the password used when accessing the API
-CLUSTER_PWD = os.environ.get('FTT_CLUSTER_PWD') or 'admin'
-# CLUSTER_FOLDER is the starting folder to use for file uploads for FTT
-CLUSTER_FOLDER = os.environ.get('FTT_CLUSTER_FOLDER')
-```
-Once email is integrated into the app (pending) you'll want to also set up email 
-connection info:
+# The locally mounted path of the uploads folder. 
+# Must be mounted to a qumulo cluster.
+UPLOADS_FOLDER = '<locally-mounted-upload-path>'
 
-```
-    # Flask-Mail settings
-    MAIL_SERVER = 'smtp.googlemail.com'
-    MAIL_PORT = 587
-    MAIL_USE_TLS = True
-    MAIL_USERNAME = os.environ.get('MAIL_USERNAME') or 'user@domain.com'
-    MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD') or 'abc123'
+# The full path of the uploads folder on the Qumulo cluster
+CLUSTER_FOLDER = os.environ.get('FTT_CLUSTER_FOLDER') or '<cluster-upload-path>'
+
+# Qumulo api host, user, and password
+CLUSTER = os.environ.get('FTT_CLUSTER') or '<cluster-host-name>'
+CLUSTER_USER = os.environ.get('FTT_CLUSTER_USER') or '<cluster-api-user>'
+CLUSTER_PWD = os.environ.get('FTT_CLUSTER_PWD') or '<cluster-api-password>'
 ```
 
 *NOTE* Don't forget to `source` your shell script, restart a new session or otherwise pick up settings 
 such as `FTT_CLUSTER_FOLDER` after you change them; Typically you'll need to restart the application
 after making any config changes.
+
 
 
 ### 5. Create local Sql database for users and logging
@@ -124,16 +119,10 @@ If you run into problems, try
 ```
 ./manage.py db --help
 ```
-### 6. Mount cluster volume under [FTT folder]/app/static/uploads (or your own location)
 
-FTT currently does not use the REST API in order to create files; Instead, by default, we mount a cluster share
-at `[FTT folder]/app/static/uploads`.  Note that this is just the default setting for uploads in `config.py`, 
-it can be any folder that is reachable/writeable by the context in which the FTT app is running.  You can
-change the folder by changing the following line in `config.py`:
 
-    UPLOADS_FOLDER = os.path.realpath('.') + '/app/static/uploads/'
 
-### 7. Supporting multiple users
+### 6. Supporting multiple users
 
 The [guidance](http://flask.pocoo.org/docs/0.10/deploying/#deployment) from the developers of Flask is that
 you should not deploy your app into production using Flask's built-in webserver; Specifically: 
@@ -167,7 +156,9 @@ where
 
 using ```--host 0.0.0.0``` makes the host visible to other machines.
 
-### 8. Associating a project folder with a user
+
+
+### 7. Associating a project folder with a user
 Users can be associated with a specific upload folder.  When this feature is used the user's "root"
 for FTT is the specified folder relative to FTT_CLUSTER_FOLDER.
 
@@ -183,4 +174,3 @@ http://localhost:5000/auth/register?starting_folder=research1
 in FTT.
 
 Users without a specified project folder will see all files in FTT_CLUSTER_FOLDER.
-

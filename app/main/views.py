@@ -136,6 +136,5 @@ def get_cluster_data():
     if arg_path:
         path = path + arg_path
 
-    print("in get_cluster_data, path is " + path)
     json_result = get_contents(path)
     return json_result
