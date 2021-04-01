@@ -1,4 +1,7 @@
-# Qumulo File Transfer Tool (FTT) 
+# DEPRECATED: Qumulo File Transfer Tool (FTT)
+This repository has been deprecated as it is not well-maintained, tested, and has security risks.  Users should be aware that this repository will be deleted at the end of this quarter.
+
+[![No Maintenance Intended](http://unmaintained.tech/badge.svg)](http://unmaintained.tech/)
 
 Licensed under the Educational Community License, Version 2.0 (ECL-2.0) (the "License"); 
 you may not use this file except in compliance with the License.  Please refer to LICENSE
